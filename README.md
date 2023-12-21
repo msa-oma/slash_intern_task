@@ -10,3 +10,5 @@
 
 
 ![slash-task (5)](https://github.com/msa-oma/slash_intern_task/assets/62896318/069c246a-fba3-41ef-a79c-e8f126c75389)
+
+![slash-task (6)](https://github.com/msa-oma/slash_intern_task/assets/62896318/630fb77c-7440-401a-b6c0-b6de8e3b062c)
