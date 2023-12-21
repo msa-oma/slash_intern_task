@@ -1,14 +1,148 @@
-import 'package:carousel_slider/carousel_slider.dart';
+// SingleChildScrollView(
+//                 child: Column(
+//                   children: [
+//                     //product images
+//                     CarouselSlider(
+//                       items: [sliderImage(0), sliderImage(1), sliderImage(2)],
+//                       options: CarouselOptions(),
+//                     ),
+//                     Padding(
+//                       padding: const EdgeInsets.symmetric(horizontal: 45),
+//                       child: Row(
+//                         mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                         children: [
+//                           // product name
+//                           Text(widget.selectedProduct.name,
+//                               style: const TextStyle(
+//                                   color: Colors.white,
+//                                   fontWeight: FontWeight.bold,
+//                                   fontSize: 18)),
+//                           const Spacer(),
+
+//                           // slash logo
+//                           CircleAvatar(
+//                             radius: 30.0,
+//                             backgroundImage: NetworkImage(
+//                                 widget.selectedProduct.brands.brandLogoUrl!),
+//                             backgroundColor: Colors.transparent,
+//                           )
+//                         ],
+//                       ),
+//                     ),
+//                     Padding(
+//                       padding: const EdgeInsets.symmetric(horizontal: 45),
+//                       child: Row(
+//                         mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                         children: [
+//                           //price of product
+//                           Text(
+//                             'EGP ${widget.selectedProduct.variations[0].price}',
+//                             style: const TextStyle(
+//                                 color: Colors.white, fontSize: 16),
+//                           ),
+//                           const Spacer(),
+//                           // prand name
+//                           Text(
+//                             '${widget.selectedProduct.brands.brandName} ',
+//                             style: const TextStyle(
+//                                 color: Colors.white, fontSize: 14),
+//                           ),
+//                           horizontalSpace(10),
+//                         ],
+//                       ),
+//                     ),
+//                     verticalSpace(20.h),
+//                     //Select product color
+//                     SizedBox(
+//                       height: 35,
+//                       child: ListView.separated(
+//                         padding: const EdgeInsets.symmetric(horizontal: 120),
+
+//                         //EdgeInsetsDirectional.only(start: 10),
+//                         scrollDirection: Axis.horizontal,
+//                         itemCount: variations.colors.length,
+//                         itemBuilder: (BuildContext context, int index) {
+//                           return GestureDetector(
+//                             onTap: () {},
+//                             child: Container(
+//                               decoration: BoxDecoration(
+//                                 shape: BoxShape.circle,
+//                                 color:
+//                                     ColorsManager.lighterGray.withOpacity(0.2),
+//                                 // variations.colors[index].withOpacity(0.5),
+//                                 // border: Border.all(color: Colors.white)
+//                               ),
+//                               child: Padding(
+//                                 padding: const EdgeInsets.all(3.0),
+//                                 child: CircleAvatar(
+//                                     radius: 15.0,
+//                                     backgroundColor: variations.colors[index]
+//                                         .withOpacity(0.8)),
+//                               ),
+//                               //variations.colors[index].withOpacity(0.5)
+//                             ),
+//                           );
+//                         },
+//                         separatorBuilder: (context, index) {
+//                           return horizontalSpace(10);
+//                         },
+//                       ),
+//                     ),
+
+//                     //============/
+//                     sizeOrMaterial(variations, 'Size', 'select chart',
+//                         variations.sizes, variations.sizes.isNotEmpty),
+//                     verticalSpace(20.h),
+//                     sizeOrMaterial(variations, 'Material', '',
+//                         variations.materials, variations.materials.isNotEmpty),
+//                     verticalSpace(15),
+
+//                     //Description of Product
+//                     Container(
+//                       width: 160.w,
+//                       height: 70.h,
+//                       decoration: BoxDecoration(
+//                           color: ColorsManager.gray.withOpacity(0.2),
+//                           borderRadius: BorderRadius.circular(16)),
+//                       child: Center(
+//                         child: Text(widget.selectedProduct.description,
+//                             textAlign: TextAlign.center,
+//                             style: const TextStyle(
+//                                 color: Colors.white, fontSize: 14)),
+//                       ),
+//                     ),
+
+//                     //useless button or for better UX I thing
+//                     TextButton(
+//                         onPressed: () {
+//                           context.pop();
+//                         },
+//                         child: const Text("go back",
+//                             style:
+//                                 TextStyle(color: Colors.white, fontSize: 14)))
+//                   ],
+//                 ),
+//               )
+
+
+
+
+
+
+
+
+/*import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slash_intern_task/core/helper/nav_extension.dart';
 import 'package:slash_intern_task/features/product_details/data/models/product.dart';
 import 'package:slash_intern_task/features/product_details/logic/cubit/product_state.dart';
+import 'package:slash_intern_task/features/product_details/logic/help_with_variation.dart';
+
 import '../../../core/helper/spacing.dart';
 import '../../../core/theming/colors.dart';
 import '../logic/cubit/product_cubit.dart';
-import '../logic/properties.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Product selectedProduct;
@@ -32,6 +166,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var variations = Variation.getFakeVariation(widget.selectedProduct.id);
     return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
@@ -61,9 +196,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               );
             }
             if (state is Success) {
-              List colors = getAvaibleColors(state.data);
-              List sizes = getAvaibleSizes(state.data);
-              List materials = getAvaibleMaterials(state.data);
               return SingleChildScrollView(
                 child: Column(
                   children: [
@@ -78,7 +210,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           // product name
-                          Text(state.data.name,
+                          Text(widget.selectedProduct.name,
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -88,8 +220,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           // slash logo
                           CircleAvatar(
                             radius: 30.0,
-                            backgroundImage:
-                                NetworkImage(state.data.brandImage!),
+                            backgroundImage: NetworkImage(
+                                widget.selectedProduct.brands.brandLogoUrl!),
                             backgroundColor: Colors.transparent,
                           )
                         ],
@@ -102,15 +234,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         children: [
                           //price of product
                           Text(
-                            //price should change depending on variant
-                            'EGP ${state.data.variations[0].price}',
+                            'EGP ${widget.selectedProduct.variations[0].price}',
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 16),
                           ),
                           const Spacer(),
                           // prand name
                           Text(
-                            '${state.data.brandName} ',
+                            '${widget.selectedProduct.brands.brandName} ',
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 14),
                           ),
@@ -127,8 +258,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                         //EdgeInsetsDirectional.only(start: 10),
                         scrollDirection: Axis.horizontal,
-                        itemCount: colors.length,
-                        // variations.colors.length,
+                        itemCount: variations.colors.length,
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () {},
@@ -144,8 +274,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 padding: const EdgeInsets.all(3.0),
                                 child: CircleAvatar(
                                     radius: 15.0,
-                                    backgroundColor:
-                                        hexToColor(colors[index].value)),
+                                    backgroundColor: variations.colors[index]
+                                        .withOpacity(0.8)),
                               ),
                               //variations.colors[index].withOpacity(0.5)
                             ),
@@ -158,15 +288,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
 
                     //============/
-                    // sizeOrMaterial(variations, 'Size', 'select chart',
-                    //     variations.sizes, variations.sizes.isNotEmpty),
-                    sizeOrMaterial(
-                        sizes, 'Size', 'select chart', sizes.isNotEmpty),
+                    sizeOrMaterial(variations, 'Size', 'select chart',
+                        variations.sizes, variations.sizes.isNotEmpty),
                     verticalSpace(20.h),
-                    // sizeOrMaterial(variations, 'Material', '',
-                    //     variations.materials, variations.materials.isNotEmpty),
-                    sizeOrMaterial(
-                        materials, 'Material', '', materials.isNotEmpty),
+                    sizeOrMaterial(variations, 'Material', '',
+                        variations.materials, variations.materials.isNotEmpty),
                     verticalSpace(15),
 
                     //Description of Product
@@ -177,7 +303,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           color: ColorsManager.gray.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(16)),
                       child: Center(
-                        child: Text('Descriptipn: ${state.data.description}',
+                        child: Text(widget.selectedProduct.description,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 14)),
@@ -205,8 +331,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
 // Show the available Sizes or Materials if any
-  Visibility sizeOrMaterial(
-      List sizeOrMat, String type, String chart, bool visible) {
+  Visibility sizeOrMaterial(Variation variations, String type, String chart,
+      List<String> sizeOrMaterial, bool visible) {
     return Visibility(
       visible: visible, //variations.sizes.isNotEmpty
       child: Column(
@@ -229,7 +355,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 40),
-              itemCount: sizeOrMat.length, // variations.sizes.length,
+              itemCount: sizeOrMaterial.length, // variations.sizes.length,
               itemBuilder: (contxt, index) {
                 return Container(
                   width: 75,
@@ -239,7 +365,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       borderRadius: BorderRadius.circular(16)),
                   child: Center(
                       child: Text(
-                          sizeOrMat[index].value)), //variations.sizes[index]
+                          sizeOrMaterial[index])), //variations.sizes[index]
                 );
               },
               separatorBuilder: (context, index) {
@@ -257,7 +383,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     bool isEndOfImages =
         widget.selectedProduct.variations[0].productVarientImages.length >
             index;
-
     return Container(
       height: 300,
       width: 250,
@@ -281,3 +406,4 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 }
+*/

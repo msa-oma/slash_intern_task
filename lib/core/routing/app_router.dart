@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:slash_intern_task/core/routing/routes.dart';
+import 'package:slash_intern_task/features/product_details/data/models/product.dart';
 import 'package:slash_intern_task/features/product_details/logic/cubit/product_cubit.dart';
 
 import '../../features/home/home_screen.dart';
@@ -20,9 +21,16 @@ class AppRouter {
             child: const HomeScreen(),
           ),
         );
+
       case Routes.productDetailsScreen:
+        final selecteproduct = settings.arguments as Product;
         return MaterialPageRoute(
-          builder: (_) => const ProductDetailsScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<ProductCubit>(),
+            child: ProductDetailsScreen(
+              selectedProduct: selecteproduct,
+            ),
+          ),
         );
       default:
         return MaterialPageRoute(

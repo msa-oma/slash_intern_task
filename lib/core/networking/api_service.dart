@@ -11,7 +11,12 @@ abstract class ApiService {
 
   @GET(ApiConstants.product)
   Future<dynamic> getAllProducts();
+
+  @GET('/product/{param}')
+  Future<dynamic> getProductDetails(@Path('param') int parameterValue);
 }
+
+
 
 
 //dart pub run build_runner build

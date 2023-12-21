@@ -6,7 +6,6 @@ part 'product.g.dart';
 class Data {
   @JsonKey(name: 'data')
   final List<Product> products;
-
   Data(this.products);
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
@@ -27,7 +26,7 @@ class Product {
   // final double rating;
   @JsonKey(name: 'ProductVariations')
   final List<ProductVariation> variations;
-  //List<ProductProperty>? availableProperties;
+  final List<ProductProperty> _availableProperties = [];
 
   Product(
     this.id,
@@ -41,6 +40,10 @@ class Product {
       _$ProductFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductToJson(this);
+}
+
+extension _PropertyExten on Product {
+  List<ProductProperty> get availableProperties => _availableProperties;
 }
 
 @JsonSerializable()
@@ -86,38 +89,25 @@ class ProductVarientImages {
   Map<String, dynamic> toJson() => _$ProductVarientImagesToJson(this);
 }
 
-// @JsonSerializable()
-// class ProductProperty {
-//   final String? color;
-//   final String? size;
-//   final String? material;
+class ProductProperty {
+  final String? color;
+  final String? size;
+  final String? material;
 
-//   ProductProperty(this.color, this.size, this.material);
-//   factory ProductProperty.fromJson(Map<String, dynamic> json) =>
-//       _$ProductPropertyFromJson(json);
+  ProductProperty(this.color, this.size, this.material);
+}
 
-//   Map<String, dynamic> toJson() => _$ProductPropertyToJson(this);
-// }
+//@JsonSerializable()
+class ProductPropertyAndValue {
+  final String property; //color, or size, or material
+  final String
+      value; //if property is color, value may be: #008000(hex for Green)
+  //if property is size, value may be: XL
 
-// @JsonSerializable()
-// class ProductPropertyAndValue {
-//   final String property; //color, or size, or material
-//   final String
-//       value; //if property is color, value may be: #008000(hex for Green)
-//   //if property is size, value may be: XL
+  ProductPropertyAndValue(this.property, this.value);
 
-//   ProductPropertyAndValue(this.property, this.value);
+  // factory ProductPropertyAndValue.fromJson(Map<String, dynamic> json) =>
+  //     _$ProductPropertyAndValueFromJson(json);
 
-//   factory ProductPropertyAndValue.fromJson(Map<String, dynamic> json) =>
-//       _$ProductPropertyAndValueFromJson(json);
-
-//   Map<String, dynamic> toJson() => _$ProductPropertyAndValueToJson(this);
-// }
-
-// class CartItem {
-//   int? id;
-//   int productVariationId;
-//   int quantity;
-//   //user can add one or multiple items of the same product variation at once
-//   CartItem(this.productVariationId, this.quantity);
-// }
+  // Map<String, dynamic> toJson() => _$ProductPropertyAndValueToJson(this);
+}

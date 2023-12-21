@@ -1,6 +1,8 @@
 class ApiConstants {
   static const String apiBaseUrl = "https://slash-backend.onrender.com/";
   static const String product = 'product';
+
+  static const String productDetails = 'product/';
 }
 
 class ApiErrors {
